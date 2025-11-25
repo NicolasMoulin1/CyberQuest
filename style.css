@@ -1,0 +1,103 @@
+body {
+  font-family: Arial, sans-serif;
+  background: #f4f7fb;
+  margin: 0;
+  padding: 20px;
+  color: #1a1a1a;
+}
+
+.container {
+  max-width: 900px;
+  background: white;
+  padding: 20px;
+  margin: auto;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+.title {
+  text-align: center;
+}
+section {
+  margin-bottom: 30px;
+}
+
+h1,
+h2 {
+  margin-top: 0; /* Garde ton style actuel */
+}
+
+ul {
+  padding-left: 20px;
+}
+
+.start-container {
+  text-align: center;
+  margin-top: 40px;
+}
+
+.start-button {
+  display: inline-block;
+  padding: 15px 30px;
+  background: #06b6d4;
+  color: white;
+  font-size: 1.4em;
+  text-decoration: none;
+  border-radius: 10px;
+  font-weight: bold;
+  transition: 0.25s;
+}
+
+.start-button:hover {
+  background: #0891b2;
+  transform: scale(1.05);
+}
+
+.difficulty-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  font-size: 1em;
+  text-align: left;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.difficulty-table thead {
+  background: #f0f0f0;
+}
+
+.difficulty-table th,
+.difficulty-table td {
+  padding: 12px 15px;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.difficulty-table tbody tr:nth-child(even) {
+  background: #fafafa;
+}
+
+.difficulty-table tbody tr:hover {
+  background: #e0f7ff;
+  transition: 0.2s;
+}
+
+.badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-weight: bold;
+  font-size: 0.85rem;
+  color: white;
+}
+
+.easy {
+  background: #22c55e;
+}
+.medium {
+  background: #eab308;
+  color: black;
+}
+.hard {
+  background: #ef4444;
+}

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CyberQuest – Scoreboard</title>
+    <link rel="stylesheet" href="scoreBoard.css" />
+  </head>
+
+  <body>
+    <div class="container">
+      <h1>CyberQuest – Scoreboard</h1>
+      <h2>Game Points Manager</h2>
+      <a href="index.html" class="return-button">⬅️ Return to Rules</a>
+
+      <section class="scoreboard">
+        <h2>👥 Player Setup</h2>
+
+        <label for="playerCount"
+          ><strong>Select number of players:</strong></label
+        >
+        <select id="playerCount">
+          <option value="2">2 Players</option>
+          <option value="3">3 Players</option>
+          <option value="4">4 Players</option>
+        </select>
+
+        <button class="btn-create" onclick="setupPlayers()">
+          Create Players
+        </button>
+
+        <div id="players"></div>
+      </section>
+    </div>
+
+    <script>
+      let players = [];
+      let targetScore = 35; // Adjustable later if needed
+
+      function setupPlayers() {
+        const count = document.getElementById("playerCount").value;
+        const container = document.getElementById("players");
+        container.innerHTML = "";
+        players = [];
+
+        for (let i = 1; i <= count; i++) {
+          players.push({ name: "Player " + i, score: 0 });
+
+          const div = document.createElement("div");
+          div.classList.add("player");
+
+          div.innerHTML = `
+          <h3 contenteditable="true" class="editable-name">${
+            players[i - 1].name
+          }</h3>
+          <p class="score" id="score${i}">Score: 0</p>
+
+          <div class="progress-bar">
+            <div id="progress${i}" class="progress-fill" style="width: 0%"></div>
+          </div>
+
+          <button class="btn easy-btn" onclick="addPoints(${i}, 2)">+2 (Easy)</button>
+          <button class="btn medium-btn" onclick="addPoints(${i}, 4)">+4 (Medium)</button>
+          <button class="btn hard-btn" onclick="addPoints(${i}, 6)">+6 (Hard)</button>
+
+          <button class="btn minus-btn" onclick="removePoints(${i}, 2)">−2</button>
+          <button class="btn reset-btn" onclick="resetPlayer(${i})">Reset</button>
+        `;
+
+          container.appendChild(div);
+        }
+      }
+
+      function addPoints(id, pts) {
+        players[id - 1].score += pts;
+        updateDisplay(id);
+      }
+
+      function removePoints(id, pts) {
+        players[id - 1].score = Math.max(0, players[id - 1].score - pts);
+        updateDisplay(id);
+      }
+
+      function resetPlayer(id) {
+        players[id - 1].score = 0;
+        updateDisplay(id);
+      }
+
+      function updateDisplay(id) {
+        const score = players[id - 1].score;
+        document.getElementById("score" + id).innerText = "Score: " + score;
+
+        const percent = Math.min(100, (score / targetScore) * 100);
+        document.getElementById("progress" + id).style.width = percent + "%";
+      }
+    </script>
+    <div id="random-color-rectangle" class="color-rectangle">
+      Difficulty will appear here
+    </div>
+
+    <button id="choose-button">🎲 Choose Random Difficulty</button>
+    <script>
+      const rectangle = document.getElementById("random-color-rectangle");
+      const button = document.getElementById("choose-button");
+
+      button.addEventListener("click", () => {
+        const difficulties = [
+          { name: "Easy", color: "#22c55e", points: 2 },
+          { name: "Medium", color: "#eab308", points: 4 },
+          { name: "Hard", color: "#ef4444", points: 6 },
+        ];
+
+        const choice =
+          difficulties[Math.floor(Math.random() * difficulties.length)];
+
+        rectangle.style.backgroundColor = choice.color;
+        rectangle.innerText = `${choice.name} (+${choice.points} pts)`;
+
+        // Ajouter l'effet flash
+        rectangle.classList.remove("flash"); // reset animation si déjà en cours
+        void rectangle.offsetWidth; // force reflow pour relancer l'animation
+        rectangle.classList.add("flash");
+      });
+    </script>
+  </body>
+</html>

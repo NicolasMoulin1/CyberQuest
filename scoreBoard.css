@@ -1,0 +1,171 @@
+/* ======================= scoreboard.css ======================= */
+body {
+  font-family: Arial, sans-serif;
+  background: #121212;
+  margin: 0;
+  padding: 20px;
+  color: white;
+}
+
+.container {
+  max-width: 900px;
+  background: #1c1c1c;
+  padding: 20px;
+  margin: auto;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+h1,
+h2 {
+  margin-top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.scoreboard {
+  margin-top: 30px;
+  padding: 20px;
+  background: #1c1c1c;
+  color: white;
+  border-radius: 10px;
+}
+.player {
+  margin-bottom: 15px;
+  padding: 15px;
+  border: 1px solid #444;
+  border-radius: 8px;
+  background: #2b2b2b;
+}
+.player h3 {
+  margin: 0 0 10px 0;
+}
+.score {
+  font-size: 1.4em;
+  font-weight: bold;
+}
+.progress-bar {
+  width: 100%;
+  background: #333;
+  height: 10px;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+.progress-fill {
+  height: 10px;
+  background: #06b6d4;
+  border-radius: 5px;
+  width: 0%;
+  transition: width 0.3s ease-in-out;
+}
+
+/* Buttons */
+.btn {
+  padding: 6px 12px;
+  margin-right: 6px;
+  margin-top: 5px;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  font-weight: bold;
+  transition: 0.2s;
+}
+.easy-btn {
+  background: #4caf50;
+}
+.medium-btn {
+  background: #eab308;
+  color: black;
+}
+.hard-btn {
+  background: #e74c3c;
+}
+.minus-btn {
+  background: #555;
+}
+.reset-btn {
+  background: #777;
+}
+.btn-create {
+  padding: 6px 12px;
+  margin-top: 10px;
+  background: #3498db;
+  color: white;
+  border-radius: 6px;
+}
+.return-button {
+  display: inline-block;
+  margin-bottom: 20px;
+  padding: 10px 18px;
+  background: #444;
+  color: white;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: bold;
+  transition: 0.2s;
+}
+.btn:hover,
+.minus-btn:hover,
+.reset-btn:hover,
+.return-button:hover {
+  transform: scale(1.05);
+  background: #333;
+}
+.color-rectangle {
+  width: 250px;
+  height: 100px;
+  border-radius: 12px;
+  margin: 30px auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  font-size: 1.2em;
+  color: white;
+  text-align: center;
+  background: #888; /* couleur initiale neutre */
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+  transition: all 0.3s ease;
+}
+
+button#choose-button {
+  display: block;
+  margin: 20px auto;
+  padding: 10px 20px;
+  font-size: 1em;
+  font-weight: bold;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  background-color: #06b6d4;
+  color: white;
+  transition: 0.2s;
+}
+
+button#choose-button:hover {
+  background-color: #0891b2;
+  transform: scale(1.05);
+}
+
+@keyframes flash {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.color-rectangle.flash {
+  animation: flash 0.3s ease-in-out;
+}
+
+button#choose-button:active {
+  transform: scale(0.95); /* effet “press” */
+  background-color: #0284c7; /* optionnel : couleur différente pendant le clic */
+}
