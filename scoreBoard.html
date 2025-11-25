@@ -31,75 +31,104 @@
 
         <div id="players"></div>
       </section>
+
+      <div id="random-color-rectangle" class="color-rectangle">
+        Difficulty will appear here
+      </div>
+
+      <button id="choose-button">🎲 Choose Random Difficulty</button>
     </div>
 
     <script>
       let players = [];
-      let targetScore = 35; // Adjustable later if needed
+      const targetScore = 50;
+
+      // Charger les scores sauvegardés au chargement
+      window.addEventListener("load", () => {
+        const saved = JSON.parse(localStorage.getItem("cyberquestPlayers"));
+        if (saved && saved.length > 0) {
+          players = saved;
+          renderPlayers();
+        }
+      });
 
       function setupPlayers() {
-        const count = document.getElementById("playerCount").value;
-        const container = document.getElementById("players");
-        container.innerHTML = "";
+        const count = parseInt(document.getElementById("playerCount").value);
         players = [];
-
         for (let i = 1; i <= count; i++) {
           players.push({ name: "Player " + i, score: 0 });
+        }
+        renderPlayers();
+        savePlayers();
+      }
 
+      function renderPlayers() {
+        const container = document.getElementById("players");
+        container.innerHTML = "";
+
+        players.forEach((player, index) => {
+          const i = index + 1;
           const div = document.createElement("div");
           div.classList.add("player");
 
           div.innerHTML = `
-          <h3 contenteditable="true" class="editable-name">${
-            players[i - 1].name
+            <h3 contenteditable="true" class="editable-name" oninput="updateName(${index}, this.innerText)">${
+            player.name
           }</h3>
-          <p class="score" id="score${i}">Score: 0</p>
-
-          <div class="progress-bar">
-            <div id="progress${i}" class="progress-fill" style="width: 0%"></div>
-          </div>
-
-          <button class="btn easy-btn" onclick="addPoints(${i}, 2)">+2 (Easy)</button>
-          <button class="btn medium-btn" onclick="addPoints(${i}, 4)">+4 (Medium)</button>
-          <button class="btn hard-btn" onclick="addPoints(${i}, 6)">+6 (Hard)</button>
-
-          <button class="btn minus-btn" onclick="removePoints(${i}, 2)">−2</button>
-          <button class="btn reset-btn" onclick="resetPlayer(${i})">Reset</button>
-        `;
+            <p class="score" id="score${i}">Score: ${player.score}</p>
+            <div class="progress-bar">
+              <div id="progress${i}" class="progress-fill" style="width: ${Math.min(
+            100,
+            (player.score / targetScore) * 100
+          )}%"></div>
+            </div>
+            <button class="btn easy-btn" onclick="addPoints(${index}, 2)">+2 (Easy)</button>
+            <button class="btn medium-btn" onclick="addPoints(${index}, 4)">+4 (Medium)</button>
+            <button class="btn hard-btn" onclick="addPoints(${index}, 6)">+6 (Hard)</button>
+            <button class="btn minus-btn" onclick="removePoints(${index}, 2)">−2</button>
+            <button class="btn reset-btn" onclick="resetPlayer(${index})">Reset Score</button>
+          `;
 
           container.appendChild(div);
-        }
+        });
       }
 
-      function addPoints(id, pts) {
-        players[id - 1].score += pts;
-        updateDisplay(id);
+      function addPoints(index, pts) {
+        players[index].score += pts;
+        updateDisplay(index);
+        savePlayers();
       }
 
-      function removePoints(id, pts) {
-        players[id - 1].score = Math.max(0, players[id - 1].score - pts);
-        updateDisplay(id);
+      function removePoints(index, pts) {
+        players[index].score = Math.max(0, players[index].score - pts);
+        updateDisplay(index);
+        savePlayers();
       }
 
-      function resetPlayer(id) {
-        players[id - 1].score = 0;
-        updateDisplay(id);
+      function resetPlayer(index) {
+        players[index].score = 0;
+        updateDisplay(index);
+        savePlayers();
       }
 
-      function updateDisplay(id) {
-        const score = players[id - 1].score;
-        document.getElementById("score" + id).innerText = "Score: " + score;
-
-        const percent = Math.min(100, (score / targetScore) * 100);
-        document.getElementById("progress" + id).style.width = percent + "%";
+      function updateName(index, newName) {
+        players[index].name = newName;
+        savePlayers();
       }
-    </script>
-    <div id="random-color-rectangle" class="color-rectangle">
-      Difficulty will appear here
-    </div>
 
-    <button id="choose-button">🎲 Choose Random Difficulty</button>
-    <script>
+      function updateDisplay(index) {
+        const score = players[index].score;
+        document.getElementById("score" + (index + 1)).innerText =
+          "Score: " + score;
+        document.getElementById("progress" + (index + 1)).style.width =
+          Math.min(100, (score / targetScore) * 100) + "%";
+      }
+
+      function savePlayers() {
+        localStorage.setItem("cyberquestPlayers", JSON.stringify(players));
+      }
+
+      // ----------------- Random Difficulty -----------------
       const rectangle = document.getElementById("random-color-rectangle");
       const button = document.getElementById("choose-button");
 
@@ -112,14 +141,19 @@
 
         const choice =
           difficulties[Math.floor(Math.random() * difficulties.length)];
-
         rectangle.style.backgroundColor = choice.color;
         rectangle.innerText = `${choice.name} (+${choice.points} pts)`;
 
-        // Ajouter l'effet flash
-        rectangle.classList.remove("flash"); // reset animation si déjà en cours
-        void rectangle.offsetWidth; // force reflow pour relancer l'animation
+        // Flash animation
+        rectangle.classList.remove("flash");
+        void rectangle.offsetWidth;
         rectangle.classList.add("flash");
+
+        // Reset automatique après 30s
+        setTimeout(() => {
+          rectangle.style.backgroundColor = "#888";
+          rectangle.innerText = "Difficulty will appear here";
+        }, 30000);
       });
     </script>
   </body>
