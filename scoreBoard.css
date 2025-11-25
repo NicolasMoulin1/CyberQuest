@@ -10,7 +10,7 @@ body {
   position: relative;
 }
 
-/* Scanlines */
+/* Scanlines effect */
 body::after {
   content: "";
   position: fixed;
@@ -61,6 +61,7 @@ body::before {
   position: relative;
 }
 
+/* Decorative cyber-line */
 .container::before {
   content: "";
   position: absolute;
@@ -72,15 +73,16 @@ body::before {
 }
 
 @keyframes glowLine {
-  50% {
-    opacity: 1;
-  }
   0%,
   100% {
     opacity: 0;
   }
+  50% {
+    opacity: 1;
+  }
 }
 
+/* Logo */
 .title-logo {
   display: block;
   margin: 0 auto 20px auto;
@@ -89,6 +91,7 @@ body::before {
   filter: drop-shadow(0 0 12px #00eaff);
 }
 
+/* Titles */
 h1,
 h2 {
   text-align: center;
@@ -142,7 +145,6 @@ h2 {
   transform: scale(1.05);
   box-shadow: 0 0 15px #00eaffaa;
 }
-
 .player-card.active {
   border-color: #00faff;
   box-shadow: 0 0 20px #00eaffee;
@@ -234,11 +236,15 @@ h2 {
 .reset-btn {
   background: #0ea5e9;
 }
+
 .btn-create {
   background: #00bcd4;
   color: black;
 }
+
 #choose-button {
+  display: block;
+  margin: 20px auto; /* centre horizontalement */
   background: #00bcd4;
   color: black;
   font-size: 1.3em;
@@ -264,7 +270,6 @@ h2 {
 .flash {
   animation: flashAnim 0.4s alternate 4;
 }
-
 @keyframes flashAnim {
   0% {
     transform: scale(1);
