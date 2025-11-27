@@ -1,0 +1,325 @@
+/* ===== GLOBAL STYLE ===== */
+
+body {
+  font-family: "Orbitron", Arial, sans-serif;
+  background: #050505;
+  margin: 0;
+  padding: 20px;
+  color: #c8f7ff;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* Subtle scanlines (CRT effect) */
+body::after {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: repeating-linear-gradient(
+    rgba(255, 255, 255, 0.03) 0px,
+    rgba(255, 255, 255, 0.03) 1px,
+    transparent 2px
+  );
+  pointer-events: none;
+}
+
+/* ===== CYBER GRID BACKGROUND ===== */
+
+body::before {
+  content: "";
+  position: fixed;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(0, 255, 255, 0.1), transparent 70%),
+    repeating-linear-gradient(#0ff2 0 2px, transparent 2px 40px),
+    repeating-linear-gradient(90deg, #0ff2 0 2px, transparent 2px 40px);
+  animation: gridMove 25s linear infinite;
+  z-index: -1;
+}
+
+@keyframes gridMove {
+  from {
+    transform: translate(0, 0);
+  }
+  to {
+    transform: translate(50px, 50px);
+  }
+}
+
+/* ===== CONTAINER ===== */
+
+.container {
+  max-width: 900px;
+  background: rgba(0, 20, 30, 0.7);
+  padding: 25px;
+  margin: auto;
+  border-radius: 12px;
+  box-shadow: 0 0 12px #00eaff88;
+  border: 1px solid #00faff55;
+  backdrop-filter: blur(6px);
+  position: relative;
+}
+
+/* Cyber highlight borders */
+.container::before {
+  content: "";
+  position: absolute;
+  top: -2px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #00faff, transparent);
+  animation: glowLine 2.5s infinite;
+}
+
+@keyframes glowLine {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+/* ===== TITLE & LOGO ===== */
+
+.title-logo {
+  display: block;
+  margin: 0 auto 10px auto;
+  height: 300px;
+  filter: drop-shadow(0 0 12px #00eaff);
+}
+
+.title {
+  text-align: center;
+  margin: 5px 0;
+  font-size: 2.4em;
+  text-transform: uppercase;
+  color: #00faff;
+  text-shadow: 0 0 15px #00eaff, 0 0 40px #00bcd4;
+}
+
+.subtitle {
+  text-align: center;
+  margin-top: -5px;
+  color: #7eeaff;
+  font-size: 1.2em;
+}
+
+/* ===== SECTION HEADERS ===== */
+
+h2 {
+  color: #00eaff;
+  text-shadow: 0 0 12px #00bcd4;
+  border-left: 3px solid #00faff;
+  padding-left: 10px;
+}
+
+h3 {
+  color: #59eaff;
+}
+
+/* ===== BUTTON STYLE ===== */
+
+.start-button {
+  display: inline-block;
+  padding: 15px 35px;
+  background: #00bcd4;
+  color: black;
+  font-size: 1.4em;
+  text-decoration: none;
+  border-radius: 10px;
+  font-weight: bold;
+  transition: 0.25s;
+  box-shadow: 0 0 12px #00eaffaa;
+}
+
+.start-button:hover {
+  background: #00faff;
+  color: #000;
+  transform: scale(1.1);
+  box-shadow: 0 0 20px #00eaff;
+}
+
+/* ===== TABLE ===== */
+
+.difficulty-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  font-size: 1em;
+  color: #d6fbff;
+  background: rgba(0, 40, 50, 0.4);
+  border: 1px solid #00faff55;
+  box-shadow: 0 0 12px #00eaff55;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.difficulty-table thead {
+  background: rgba(0, 255, 255, 0.15);
+}
+
+.difficulty-table th,
+.difficulty-table td {
+  padding: 12px 15px;
+  border-bottom: 1px solid #00faff22;
+}
+
+.difficulty-table tbody tr:hover {
+  background: rgba(0, 255, 255, 0.1);
+}
+
+/* Difficulty badges */
+.badge {
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-weight: bold;
+  font-size: 0.85rem;
+  color: black;
+  text-shadow: 0 0 4px #fff;
+}
+
+.easy {
+  background: #22c55e;
+}
+.medium {
+  background: #eab308;
+}
+.hard {
+  background: #ef4444;
+}
+.start-container {
+  text-align: center;
+}
+/* ============================
+   RESPONSIVE DESIGN
+   ============================ */
+
+/* --- TABLETTES (≤ 1024px) --- */
+@media (max-width: 1024px) {
+  .container {
+    max-width: 85%;
+    padding: 20px;
+  }
+
+  .title-logo {
+    height: 220px;
+  }
+
+  .title {
+    font-size: 2em;
+  }
+}
+
+/* --- SMARTPHONES (≤ 768px) --- */
+@media (max-width: 768px) {
+  body {
+    padding: 10px;
+  }
+
+  .container {
+    padding: 18px;
+  }
+
+  .title-logo {
+    height: 180px;
+  }
+
+  .title {
+    font-size: 1.8em;
+  }
+
+  .subtitle {
+    font-size: 1em;
+  }
+
+  h2 {
+    font-size: 1.3em;
+  }
+
+  .start-button {
+    padding: 15px;
+    font-size: 1.2em;
+  }
+
+  .difficulty-table th,
+  .difficulty-table td {
+    padding: 10px;
+    font-size: 0.9em;
+  }
+}
+
+/* --- PETITS ÉCRANS / TÉLÉPHONES (≤ 480px) --- */
+@media (max-width: 480px) {
+  .container {
+    padding: 15px;
+  }
+
+  .title-logo {
+    height: 150px;
+    margin-bottom: 5px;
+  }
+
+  .title {
+    font-size: 1.5em;
+    line-height: 1.2em;
+  }
+
+  .subtitle {
+    font-size: 0.9em;
+  }
+
+  h2 {
+    font-size: 1.15em;
+  }
+
+  h3 {
+    font-size: 1em;
+  }
+
+  .start-button {
+    font-size: 1.1em;
+    padding: 12px;
+    border-radius: 8px;
+  }
+
+  .difficulty-table th,
+  .difficulty-table td {
+    padding: 8px;
+    font-size: 0.85em;
+  }
+
+  .badge {
+    padding: 3px 8px;
+    font-size: 0.75rem;
+  }
+}
+
+/* --- EXTRA SMALL DEVICES (≤ 360px) --- */
+@media (max-width: 360px) {
+  .title-logo {
+    height: 120px;
+  }
+
+  .title {
+    font-size: 1.3em;
+  }
+
+  .start-button {
+    font-size: 1em;
+    padding: 10px;
+  }
+
+  table {
+    font-size: 0.75em;
+  }
+}

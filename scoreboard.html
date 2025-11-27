@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CyberQuest – Scoreboard</title>
+    <link rel="icon" type="image/png" href="Logo CYBERQUEST.png" />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="Logo CYBERQUEST.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="Logo CYBERQUEST.png"
+    />
+    <link rel="shortcut icon" href="Logo CYBERQUEST.png" />
+    <link rel="stylesheet" href="scoreboard.css" />
+  </head>
+
+  <body>
+    <img src="Logo CYBERQUEST.png" alt="CyberQuest Logo" class="title-logo" />
+    <div class="container">
+      <h1>CyberQuest – Scoreboard</h1>
+      <h2>Game Points Manager</h2>
+      <a href="./index.html" class="return-button">⬅️ Return to Rules</a>
+
+      <section class="scoreboard">
+        <h2>👥 Player Setup</h2>
+
+        <!-- Sélecteur de joueurs sous forme de cartes -->
+        <div class="player-selection">
+          <p><strong>Select number of players:</strong></p>
+          <div class="player-options">
+            <div class="player-card active" data-count="2">2 Players</div>
+            <div class="player-card" data-count="3">3 Players</div>
+            <div class="player-card" data-count="4">4 Players</div>
+          </div>
+          <div class="btn2">
+            <button class="btn-create" onclick="setupPlayers()">
+              Create Players
+            </button>
+            <button class="btn-create" onclick="resetAllCreatedPlayers()">
+              Reset All Players
+            </button>
+          </div>
+        </div>
+
+        <div id="players"></div>
+      </section>
+
+      <!-- Random Difficulty -->
+      <div id="random-color-rectangle" class="color-rectangle">
+        Difficulty will appear here
+      </div>
+      <button id="choose-button">🎲 Choose Random Difficulty</button>
+    </div>
+
+    <script>
+      let players = [];
+      const targetScore = 50;
+      let selectedCount = 2; // valeur par défaut
+
+      // ---------------- LocalStorage: Charger les joueurs ----------------
+      window.addEventListener("load", () => {
+        const saved = JSON.parse(localStorage.getItem("cyberquestPlayers"));
+        if (saved && saved.length > 0) {
+          players = saved;
+          renderPlayers();
+        }
+      });
+
+      // ---------------- Sélecteur de joueurs ----------------
+      const playerCards = document.querySelectorAll(".player-card");
+      playerCards.forEach((card) => {
+        card.addEventListener("click", () => {
+          playerCards.forEach((c) => c.classList.remove("active"));
+          card.classList.add("active");
+          selectedCount = parseInt(card.getAttribute("data-count"));
+        });
+      });
+
+      // ---------------- Création des joueurs ----------------
+      function setupPlayers() {
+        players = [];
+        for (let i = 1; i <= selectedCount; i++) {
+          players.push({ name: "Player " + i, score: 0 });
+        }
+        renderPlayers();
+        savePlayers();
+      }
+
+      // ---------------- Affichage des joueurs ----------------
+      function renderPlayers() {
+        const container = document.getElementById("players");
+        container.innerHTML = "";
+
+        players.forEach((player, index) => {
+          const i = index + 1;
+          const div = document.createElement("div");
+          div.classList.add("player");
+
+          div.innerHTML = `
+            <h3 contenteditable="true" class="editable-name" oninput="updateName(${index}, this.innerText)">
+              ${player.name}
+            </h3>
+            <p class="score" id="score${i}">Score: ${player.score}</p>
+            <div class="progress-bar">
+              <div id="progress${i}" class="progress-fill" style="width: ${Math.min(
+            100,
+            (player.score / targetScore) * 100
+          )}%"></div>
+            </div>
+            <button class="btn easy-btn" onclick="addPoints(${index}, 2)">+2 (Easy)</button>
+            <button class="btn medium-btn" onclick="addPoints(${index}, 4)">+4 (Medium)</button>
+            <button class="btn hard-btn" onclick="addPoints(${index}, 6)">+6 (Hard)</button>
+            <button class="btn minus-btn" onclick="addPoints(${index}, 3)">+3</button>
+            <button class="btn minus-btn" onclick="removePoints(${index}, 1)">-1</button>
+            <button class="btn minus-btn" onclick="removePoints(${index}, 2)">-2</button>
+            <button class="btn minus-btn" onclick="removePoints(${index}, 3)">-3</button>
+            <button class="btn minus-btn" onclick="removePoints(${index}, 5)">-5</button>
+            <button class="btn reset-btn" onclick="resetPlayer(${index})">Reset Score</button>
+          `;
+
+          container.appendChild(div);
+        });
+      }
+
+      // ---------------- Gestion des points ----------------
+      function addPoints(index, pts) {
+        players[index].score += pts;
+        updateDisplay(index);
+        savePlayers();
+      }
+
+      function removePoints(index, pts) {
+        players[index].score = Math.max(0, players[index].score - pts);
+        updateDisplay(index);
+        savePlayers();
+      }
+
+      function resetPlayer(index) {
+        players[index].score = 0;
+        updateDisplay(index);
+        savePlayers();
+      }
+
+      function updateName(index, newName) {
+        players[index].name = newName;
+        savePlayers();
+      }
+
+      function updateDisplay(index) {
+        const score = players[index].score;
+        document.getElementById("score" + (index + 1)).innerText =
+          "Score: " + score;
+        document.getElementById("progress" + (index + 1)).style.width =
+          Math.min(100, (score / targetScore) * 100) + "%";
+      }
+
+      // ---------------- Reset all players ----------------
+      function resetAllCreatedPlayers() {
+        players = [];
+        document.getElementById("players").innerHTML = "";
+        localStorage.removeItem("cyberquestPlayers");
+        alert("All created players have been removed!");
+      }
+
+      // ---------------- Sauvegarde ----------------
+      function savePlayers() {
+        localStorage.setItem("cyberquestPlayers", JSON.stringify(players));
+      }
+
+      // ---------------- Random Difficulty ----------------
+      const rectangle = document.getElementById("random-color-rectangle");
+      const button = document.getElementById("choose-button");
+
+      button.addEventListener("click", () => {
+        const difficulties = [
+          { name: "Easy", color: "#22c55e", points: 2 },
+          { name: "Medium", color: "#eab308", points: 4 },
+          { name: "Hard", color: "#ef4444", points: 6 },
+        ];
+
+        const choice =
+          difficulties[Math.floor(Math.random() * difficulties.length)];
+
+        rectangle.style.backgroundColor = choice.color;
+        rectangle.innerText = `${choice.name} (+${choice.points} pts)`;
+
+        // Flash animation
+        rectangle.classList.remove("flash");
+        void rectangle.offsetWidth;
+        rectangle.classList.add("flash");
+
+        // Reset automatique après 30s
+        setTimeout(() => {
+          rectangle.style.backgroundColor = "#888";
+          rectangle.innerText = "Difficulty will appear here";
+        }, 20000);
+      });
+      <!-- TEST COMMIT -->;
+    </script>
+  </body>
+</html>
