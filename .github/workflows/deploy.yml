@@ -1,0 +1,33 @@
+name: Deploy CyberQuest to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      # 1️⃣ Récupérer le dépôt
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # 2️⃣ Ajouter un cache-buster dans le HTML
+      # Remplace 'v=NOW' par le timestamp actuel
+      - name: Update CSS cache-buster
+        run: |
+          TIMESTAMP=$(date +%s)
+          sed -i "s/v=NOW/v=$TIMESTAMP/" scoreboard.html
+
+      # 3️⃣ Déployer sur gh-pages
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./ # Publie tout à la racine
+          publish_branch: gh-pages
+          force_orphan: true
